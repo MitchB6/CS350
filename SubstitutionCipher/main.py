@@ -6,6 +6,7 @@ englishAlphabetFrequency = {'a': 0.08167, 'b': 0.01492, 'c': 0.02782, 'd': 0.042
               's': 0.06327, 't': 0.09056, 'u': 0.02758, 'v': 0.00978, 'w': 0.02360, 'x': 0.00150,
               'y': 0.01974, 'z': 0.00074}
 sorted_english = list(dict(sorted(englishAlphabetFrequency.items(), key=lambda item: item[1], reverse=True)).keys())
+# print(sorted_english)
 cipherAlphabetFrequency = {'a': 0.0, 'b': 0.0, 'c': 0.0, 'd': 0.0, 'e': 0.0, 'f': 0.0, 
               'g': 0.0, 'h': 0.0, 'i': 0.0, 'j': 0.0, 'k': 0.0, 'l': 0.0,
               'm': 0.0, 'n': 0.0, 'o': 0.0, 'p': 0.0, 'q': 0.0, 'r': 0.0,
@@ -41,11 +42,13 @@ for ch in cipherText:
     totalChars += 1
     cipherAlphabetFrequency[ch] += 1
 for key in cipherAlphabetFrequency:
-  cipherAlphabetFrequency[key] = round(cipherAlphabetFrequency[key]/totalChars, 5)
+  cipherAlphabetFrequency[key] = round((cipherAlphabetFrequency[key]/totalChars), 5)
 sorted_cipher = list(dict(sorted(cipherAlphabetFrequency.items(), key=lambda item: item[1], reverse=True)).keys())
+# print(sorted_cipher)
 
 for i in range(0, len(sorted_english)):
   cipherKey[sorted_cipher[i]] = sorted_english[i]
+# print(cipherKey)
 
 while True:
   plainText = ""
@@ -57,22 +60,27 @@ while True:
   print("-------–-----------------------------------")
   print(plainText)
   print("-------–-----------------------------------")
-  print("--Enter the letter you would like to replace (or type 'quit' to exit):", end=" ")
+  print("--Enter the letter you would like to replace (or type 'exit' to quit):", end=" ")
   letter = input().lower()
-  if letter == "quit":
+  if letter == "exit" or letter == "quit":
     break
+  elif len(letter) != 1 or not letter.isalpha():
+    print("1 alphabetical character only")
+    continue
   print("--Enter the letter you would like to replace it with:", end=" ")
   replacement = input().lower()
+  if len(replacement) != 1 or not replacement.isalpha():
+    print("1 alphabetical character only")
+    continue
   for key, val in cipherKey.items():
     if val == letter:
       for key2, val2 in cipherKey.items():
         if val2 == replacement:
           cipherKey[key2] = letter
       cipherKey[key] = replacement
-      
       break
 
-
+plainText += "\n"
 if fileInput:
   if not os.path.isfile(fileName + "_ANS"):
     open(fileName + "_ANS", 'w').close()
